@@ -597,6 +597,24 @@
       renderCatalog(true);
     });
 
+    // --- CAMADA DE SEGURANÇA E BLOQUEIO DE CÓDIGO FONTE (ANTI-INSPECT / ANTI-COPY) ---
+    // Bloqueia clique com o botão direito do mouse
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    // Bloqueia atalhos comuns de inspeção de código (F12, Ctrl+U, Ctrl+Shift+I, etc.)
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.keyCode === 123 || // F12
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+        (e.ctrlKey && e.keyCode === 85) || // Ctrl+U
+        (e.ctrlKey && e.keyCode === 83) // Ctrl+S
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
     // --- INICIALIZAÇÃO ---
     window.onload = function() {
       fetchUserIPLocation();
