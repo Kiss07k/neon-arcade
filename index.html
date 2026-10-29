@@ -154,7 +154,7 @@
       </h1>
       
       <p class="text-neonMuted text-base sm:text-lg font-medium max-w-xl mx-auto">
-        Entre no jogos. . Explore
+        Entre nos jogos  & Explore 
       </p>
 
       <!-- Status, Active Users & View Counter Panel -->
@@ -179,15 +179,15 @@
         </div>
 
         <!-- Simulation Controls for Counter & Location -->
-        <div class="bg-black/60 border border-neonPurple/50 px-2.5 py-1.5 rounded-sm flex items-center gap-2 text-[10px] text-neonMuted">
-          <span class="hidden sm:inline font-bold">CONTROLES:</span>
-          <button id="btn-boost" title="Simular +1 Visualização" class="bg-neonPurple/30 hover:bg-neonPurple/60 text-neonCyan px-2.5 py-1 rounded border border-neonPurple/50 transition font-bold cursor-pointer">
+        <div class="bg-black/60 border border-neonPurple/50 px-2 py-1.5 rounded-sm flex items-center gap-1.5 text-[10px] text-neonMuted">
+          <span class="hidden sm:inline">CONTROLES:</span>
+          <button id="btn-boost" title="Simular +1 Visualização" class="bg-neonPurple/30 hover:bg-neonPurple/60 text-neonCyan px-2 py-0.5 rounded border border-neonPurple/50 transition">
             +1 VISTA
           </button>
-          <button id="btn-refresh-ip" title="Recarregar Localização IP" class="bg-neonCyan/20 hover:bg-neonCyan/40 text-neonCyan px-2.5 py-1 rounded border border-neonCyan/50 transition font-bold cursor-pointer">
+          <button id="btn-refresh-ip" title="Recarregar Localização IP" class="bg-neonCyan/20 hover:bg-neonCyan/40 text-neonCyan px-2 py-0.5 rounded border border-neonCyan/50 transition">
             ↻ IP
           </button>
-          <button id="btn-reset" title="Reiniciar Contador Local" class="bg-red-900/30 hover:bg-red-800/50 text-red-300 px-2.5 py-1 rounded border border-red-500/40 transition font-bold cursor-pointer">
+          <button id="btn-reset" title="Reiniciar Contador Local" class="bg-red-900/30 hover:bg-red-800/50 text-red-300 px-2 py-0.5 rounded border border-red-500/40 transition">
             RESET
           </button>
         </div>
@@ -242,6 +242,33 @@
 
   </main>
 
+  <!-- CONFIRMATION MODAL -->
+  <div id="security-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#131023] border-2 border-neonPink w-full max-w-md p-6 rounded-sm shadow-pinkGlow relative animate-in fade-in zoom-in duration-150">
+      <div class="font-orbitron text-neonPink text-lg font-bold mb-3 flex items-center gap-2">
+        <span>⚠ SAÍDA DO DOMÍNIO</span>
+      </div>
+      <p class="text-neonText text-sm mb-3">
+        Você está se conectando a um servidor externo fora do NEON ARCADE:
+      </p>
+      <div id="modal-url" class="font-mono text-xs bg-black/60 p-3 text-neonCyan break-all border border-neonCyan/30 mb-4 rounded">
+        https://...
+      </div>
+      <p class="text-xs text-neonMuted mb-6">
+        Certifique-se de não inserir senhas ou fazer download de arquivos não confiáveis.
+      </p>
+
+      <div class="flex justify-end gap-3 font-orbitron text-xs">
+        <button id="modal-cancel" class="px-4 py-2 bg-gray-800 text-gray-300 hover:bg-gray-700 transition rounded-sm">
+          CANCELAR
+        </button>
+        <button id="modal-confirm" class="px-5 py-2 bg-neonCyan text-black font-bold hover:bg-neonPink hover:text-white transition rounded-sm shadow-cyanGlow">
+          CONTINUAR ↗
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="text-center py-8 px-4 border-t border-neonPurple/30 text-neonMuted text-sm font-rajdhani bg-[#06040d]">
     <div class="max-w-6xl mx-auto space-y-1">
@@ -295,6 +322,7 @@
     };
 
     let activeFilter = "all";
+    let pendingRedirectUrl = null;
 
     // --- 2. IP & LOCATION DETECTOR ---
     async function fetchUserIPLocation() {
@@ -306,10 +334,12 @@
       locEl.textContent = "PESQUISANDO REDE...";
 
       try {
+        // Multi-provider fallback attempt
         let response = await fetch("https://ipapi.co/json/").catch(() => null);
         let data = response && response.ok ? await response.json() : null;
 
         if (!data || !data.ip) {
+          // Secondary fallback provider
           response = await fetch("https://ip-api.com/json/").catch(() => null);
           const fallbackData = response && response.ok ? await response.json() : null;
           if (fallbackData && fallbackData.status === "success") {
@@ -325,10 +355,12 @@
 
         if (data && data.ip) {
           ipEl.textContent = `IP: ${data.ip}`;
+          
           const city = data.city || data.region || "REDE LOCAL";
           const countryCode = data.country_code || "BR";
           locEl.textContent = `${city.toUpperCase()} - ${countryCode}`;
 
+          // Country flag conversion from ISO code
           if (countryCode && countryCode.length === 2) {
             const codePoints = countryCode
               .toUpperCase()
@@ -342,6 +374,7 @@
           throw new Error("Unable to resolve IP");
         }
       } catch (err) {
+        // Safe default fallback
         ipEl.textContent = "IP: 2804:14d:327:82 // SECURE";
         locEl.textContent = "INDAIATUBA - BR";
         flagEl.textContent = "🇧🇷";
@@ -362,6 +395,7 @@
       localStorage.setItem(STORAGE_KEY, views.toString());
       updateCounterDisplay(views);
 
+      // Simulation Controls
       document.getElementById("btn-boost").addEventListener("click", () => {
         let current = parseInt(localStorage.getItem(STORAGE_KEY), 10) || BASE_VIEWS;
         current += 1;
@@ -378,6 +412,7 @@
         fetchUserIPLocation();
       });
 
+      // Active Users simulation with realistic fluctuation
       updateActiveUsers();
       setInterval(updateActiveUsers, 4000);
     }
@@ -396,6 +431,7 @@
 
     function updateActiveUsers() {
       const activeEl = document.getElementById("active-users");
+      // Generate active user fluctuation between 42 and 89
       const activeCount = Math.floor(Math.random() * 47) + 42;
       activeEl.textContent = `${activeCount} CONECTADOS`;
     }
@@ -451,13 +487,13 @@
           titleEl.className = "font-rajdhani font-bold text-xl sm:text-2xl text-white my-2 leading-snug group-hover:text-neonCyan transition-colors";
           titleEl.textContent = game.name;
 
-          // Abertura imediata do link em nova aba ao clicar
-          const btn = document.createElement("a");
-          btn.href = game.url;
-          btn.target = "_blank";
-          btn.rel = "noopener noreferrer";
-          btn.className = "cyber-btn w-full mt-4 bg-neonCyan hover:bg-neonPink text-black font-orbitron font-extrabold text-xs tracking-wider py-2.5 px-3 uppercase text-center block transition-all duration-200 shadow-cyanGlow hover:shadow-pinkGlow hover:text-white";
+          const btn = document.createElement("button");
+          btn.className = "cyber-btn w-full mt-4 bg-neonCyan hover:bg-neonPink text-black font-orbitron font-extrabold text-xs tracking-wider py-2.5 px-3 uppercase text-center transition-all duration-200 shadow-cyanGlow hover:shadow-pinkGlow hover:text-white";
           btn.textContent = "ACESSAR LINK ↗";
+          
+          btn.addEventListener("click", () => {
+            openSecurityModal(game.url);
+          });
 
           card.appendChild(numEl);
           card.appendChild(titleEl);
@@ -471,7 +507,36 @@
       });
     }
 
-    // --- 5. LISTENERS & FILTERS ---
+    // --- 5. MODAL HANDLERS ---
+    const modal = document.getElementById("security-modal");
+    const modalUrl = document.getElementById("modal-url");
+    const modalConfirm = document.getElementById("modal-confirm");
+    const modalCancel = document.getElementById("modal-cancel");
+
+    function openSecurityModal(url) {
+      pendingRedirectUrl = url;
+      modalUrl.textContent = url;
+      modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      pendingRedirectUrl = null;
+      modal.classList.add("hidden");
+    }
+
+    modalConfirm.addEventListener("click", () => {
+      if (pendingRedirectUrl) {
+        window.open(pendingRedirectUrl, "_blank", "noopener,noreferrer");
+      }
+      closeModal();
+    });
+
+    modalCancel.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // --- 6. LISTENERS & FILTERS ---
     searchEl.addEventListener("input", renderCatalog);
 
     document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -483,7 +548,7 @@
       });
     });
 
-    // --- 6. INITIALIZATION ---
+    // --- 7. INITIALIZATION ---
     window.onload = function() {
       fetchUserIPLocation();
       initViewCounter();
