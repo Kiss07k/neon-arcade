@@ -154,7 +154,7 @@
       </h1>
       
       <p class="text-neonMuted text-base sm:text-lg font-medium max-w-xl mx-auto">
-        Entre no jogo. Sem downloads. Explore a rede com velocidade cyberpunk.
+        Entre no jogos. . Explore
       </p>
 
       <!-- Status, Active Users & View Counter Panel -->
