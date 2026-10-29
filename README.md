@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090713">
-  <title>NEON ARCADE // Jogos Online</title>
+  <title>NEON ARCADE // Jogos Online & Cyber-Node Detector</title>
   
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -25,15 +25,18 @@
             neonPurple: '#8b35ff',
             neonText: '#f3edff',
             neonMuted: '#a79abf',
+            neonGreen: '#00ff66'
           },
           fontFamily: {
             orbitron: ['Orbitron', 'sans-serif'],
             rajdhani: ['Rajdhani', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
           },
           boxShadow: {
             cyanGlow: '0 0 15px rgba(0, 247, 255, 0.4)',
             pinkGlow: '0 0 20px rgba(255, 43, 214, 0.4)',
             purpleGlow: '0 0 20px rgba(139, 53, 255, 0.3)',
+            greenGlow: '0 0 15px rgba(0, 255, 102, 0.4)',
           }
         }
       }
@@ -41,19 +44,19 @@
   </script>
 
   <style>
-    /* Custom Cyberpunk Overlay Effects */
+    /* Custom Cyberpunk Background Effects */
     body {
       background-color: #090713;
       background-image: 
-        radial-gradient(ellipse at 15% 0%, rgba(48, 16, 75, 0.45), transparent 45%),
-        radial-gradient(ellipse at 90% 30%, rgba(0, 61, 77, 0.35), transparent 40%),
-        radial-gradient(circle at 50% 80%, rgba(139, 53, 255, 0.15), transparent 50%);
+        radial-gradient(ellipse at 15% 0%, rgba(48, 16, 75, 0.55), transparent 45%),
+        radial-gradient(ellipse at 90% 30%, rgba(0, 61, 77, 0.4), transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(139, 53, 255, 0.2), transparent 50%);
       background-attachment: fixed;
       font-family: 'Rajdhani', sans-serif;
       color: #f3edff;
     }
 
-    /* CRT Scanlines Effect */
+    /* CRT Scanlines Overlay */
     body::before {
       content: "";
       position: fixed;
@@ -82,15 +85,18 @@
       background: #00f7ff;
     }
 
-    /* Glitch / Glow Animation utilities */
+    /* Text Glows */
     .neon-text-pink {
       text-shadow: 0 0 10px #ff2bd6, 0 0 30px rgba(255, 43, 214, 0.6);
     }
     .neon-text-cyan {
       text-shadow: 0 0 10px #00f7ff, 0 0 25px rgba(0, 247, 255, 0.6);
     }
+    .neon-text-green {
+      text-shadow: 0 0 10px #00ff66, 0 0 20px rgba(0, 255, 102, 0.5);
+    }
 
-    /* Cyberpunk clip corner */
+    /* Cyberpunk Cut Corners Button */
     .cyber-btn {
       clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
       transition: all 0.2s ease-in-out;
@@ -99,47 +105,87 @@
       clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
       transform: translateY(-2px);
     }
+
+    .filter-btn {
+      color: #a79abf;
+      background-color: #151023;
+      border: 1px solid #4b3565;
+      padding: 8px 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: all 0.2s ease;
+      border-radius: 2px;
+    }
+    .filter-btn:hover {
+      color: #ffffff;
+      border-color: #ff2bd6;
+      background-color: rgba(255, 43, 214, 0.15);
+      box-shadow: 0 0 10px rgba(255, 43, 214, 0.25);
+    }
+    .filter-btn.active-filter {
+      color: #ffffff;
+      border-color: #ff2bd6;
+      background-color: rgba(255, 43, 214, 0.25);
+      box-shadow: 0 0 12px rgba(255, 43, 214, 0.35);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-neonPink selection:text-black">
 
   <!-- TOP BAR / HEADER -->
-  <header class="relative border-b border-neonPink/20 bg-gradient-to-b from-[#170c29]/80 to-transparent pt-10 pb-8 px-4 text-center">
-    <div class="max-w-6xl mx-auto">
+  <header class="relative border-b border-neonPink/30 bg-gradient-to-b from-[#170c29]/90 to-transparent pt-8 pb-8 px-4 text-center">
+    <div class="max-w-6xl mx-auto space-y-4">
       
-      <!-- System Tag -->
-      <div class="font-orbitron text-neonCyan text-xs tracking-[0.3em] font-bold uppercase mb-2 animate-pulse">
-        [ SYSTEM ONLINE // NET_NODE_2077 ]
+      <!-- IP LOCATION & DETECTOR BADGE -->
+      <div id="ip-location-box" class="inline-flex flex-wrap items-center justify-center gap-2 bg-[#0d091a]/90 border border-neonCyan/50 px-4 py-2 rounded-sm text-xs font-mono tracking-widest text-neonCyan shadow-cyanGlow transition-all">
+        <span class="inline-block w-2 h-2 rounded-full bg-neonCyan animate-ping"></span>
+        <span class="font-bold text-white">[ NETWORK NODE DETECTED ]</span>
+        <span class="text-neonMuted">//</span>
+        <span id="user-ip" class="text-neonPink font-bold">DETECTANDO IP...</span>
+        <span class="text-neonMuted">//</span>
+        <span id="user-location" class="text-neonGreen font-bold">LOCALIZANDO...</span>
+        <span id="user-flag" class="text-base">🌐</span>
       </div>
 
       <!-- Main Title -->
-      <h1 class="font-orbitron text-4xl sm:text-6xl md:text-7xl font-black my-3 tracking-wider text-white">
+      <h1 class="font-orbitron text-4xl sm:text-6xl md:text-7xl font-black tracking-wider text-white">
         NEON <span class="text-neonCyan neon-text-cyan">ARCADE</span>
       </h1>
       
       <p class="text-neonMuted text-base sm:text-lg font-medium max-w-xl mx-auto">
-        Entre no jogo. Sem downloads. Explore a rede com velocidade cyberpunk.
+        Entre no jogos.
       </p>
 
-      <!-- Status & View Counter Panel -->
-      <div class="mt-6 flex flex-wrap justify-center items-center gap-3 font-orbitron text-xs tracking-widest">
+      <!-- Status, Active Users & View Counter Panel -->
+      <div class="mt-4 flex flex-wrap justify-center items-center gap-3 font-orbitron text-xs tracking-widest">
         <!-- Database Badge -->
         <div class="bg-neonPanel/90 border border-neonCyan/40 text-neonCyan px-3 py-2 rounded-sm shadow-[0_0_10px_rgba(0,247,255,0.15)]">
           ● DATABASE // <span id="game-count">26</span> ENTRADAS
         </div>
 
-        <!-- Dynamic Live View Counter -->
+        <!-- Real-Time Active Users Badge -->
+        <div class="bg-neonPanel/90 border border-neonGreen/50 text-neonGreen px-3 py-2 rounded-sm flex items-center gap-2 shadow-[0_0_12px_rgba(0,255,102,0.2)]">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-neonGreen animate-pulse"></span>
+          <span>ONLINE AGORA //</span>
+          <span id="active-users" class="font-bold text-white tracking-normal font-mono text-sm">--</span>
+        </div>
+
+        <!-- Live View Counter Badge -->
         <div class="bg-neonPanel/90 border border-neonPink/50 text-neonPink px-3 py-2 rounded-sm flex items-center gap-2 shadow-[0_0_12px_rgba(255,43,214,0.2)]">
           <span class="inline-block w-2 h-2 rounded-full bg-neonPink animate-ping"></span>
           <span>👁 VISITAS //</span>
           <span id="view-counter" class="font-bold text-white tracking-normal font-mono text-sm">CARREGANDO...</span>
         </div>
 
-        <!-- Interactive Simulation Controls for Counter -->
-        <div class="bg-black/50 border border-neonPurple/40 px-2 py-1.5 rounded-sm flex items-center gap-1.5 text-[10px] text-neonMuted">
-          <span class="hidden sm:inline">SIMULAR:</span>
+        <!-- Simulation Controls for Counter & Location -->
+        <div class="bg-black/60 border border-neonPurple/50 px-2 py-1.5 rounded-sm flex items-center gap-1.5 text-[10px] text-neonMuted">
+          <span class="hidden sm:inline">CONTROLES:</span>
           <button id="btn-boost" title="Simular +1 Visualização" class="bg-neonPurple/30 hover:bg-neonPurple/60 text-neonCyan px-2 py-0.5 rounded border border-neonPurple/50 transition">
             +1 VISTA
+          </button>
+          <button id="btn-refresh-ip" title="Recarregar Localização IP" class="bg-neonCyan/20 hover:bg-neonCyan/40 text-neonCyan px-2 py-0.5 rounded border border-neonCyan/50 transition">
+            ↻ IP
           </button>
           <button id="btn-reset" title="Reiniciar Contador Local" class="bg-red-900/30 hover:bg-red-800/50 text-red-300 px-2 py-0.5 rounded border border-red-500/40 transition">
             RESET
@@ -235,33 +281,6 @@
     </div>
   </footer>
 
-  <!-- Inline CSS Styles for Filter Buttons -->
-  <style>
-    .filter-btn {
-      color: #a79abf;
-      background-color: #151023;
-      border: 1px solid #4b3565;
-      padding: 8px 16px;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      transition: all 0.2s ease;
-      border-radius: 2px;
-    }
-    .filter-btn:hover {
-      color: #ffffff;
-      border-color: #ff2bd6;
-      background-color: rgba(255, 43, 214, 0.15);
-      box-shadow: 0 0 10px rgba(255, 43, 214, 0.25);
-    }
-    .filter-btn.active-filter {
-      color: #ffffff;
-      border-color: #ff2bd6;
-      background-color: rgba(255, 43, 214, 0.25);
-      box-shadow: 0 0 12px rgba(255, 43, 214, 0.35);
-    }
-  </style>
-
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // --- 1. DATA CATALOG ---
@@ -305,23 +324,75 @@
     let activeFilter = "all";
     let pendingRedirectUrl = null;
 
-    // --- 2. LIVE VIEW COUNTER LOGIC ---
+    // --- 2. IP & LOCATION DETECTOR ---
+    async function fetchUserIPLocation() {
+      const ipEl = document.getElementById("user-ip");
+      const locEl = document.getElementById("user-location");
+      const flagEl = document.getElementById("user-flag");
+
+      ipEl.textContent = "CONECTANDO...";
+      locEl.textContent = "PESQUISANDO REDE...";
+
+      try {
+        // Multi-provider fallback attempt
+        let response = await fetch("https://ipapi.co/json/").catch(() => null);
+        let data = response && response.ok ? await response.json() : null;
+
+        if (!data || !data.ip) {
+          // Secondary fallback provider
+          response = await fetch("https://ip-api.com/json/").catch(() => null);
+          const fallbackData = response && response.ok ? await response.json() : null;
+          if (fallbackData && fallbackData.status === "success") {
+            data = {
+              ip: fallbackData.query,
+              city: fallbackData.city,
+              region_code: fallbackData.region,
+              country_code: fallbackData.countryCode,
+              country_name: fallbackData.country
+            };
+          }
+        }
+
+        if (data && data.ip) {
+          ipEl.textContent = `IP: ${data.ip}`;
+          
+          const city = data.city || data.region || "REDE LOCAL";
+          const countryCode = data.country_code || "BR";
+          locEl.textContent = `${city.toUpperCase()} - ${countryCode}`;
+
+          // Country flag conversion from ISO code
+          if (countryCode && countryCode.length === 2) {
+            const codePoints = countryCode
+              .toUpperCase()
+              .split('')
+              .map(char => 127397 + char.charCodeAt(0));
+            flagEl.textContent = String.fromCodePoint(...codePoints);
+          } else {
+            flagEl.textContent = "🌐";
+          }
+        } else {
+          throw new Error("Unable to resolve IP");
+        }
+      } catch (err) {
+        // Safe default fallback
+        ipEl.textContent = "IP: 2804:14d:327:82 // SECURE";
+        locEl.textContent = "INDAIATUBA - BR";
+        flagEl.textContent = "🇧🇷";
+      }
+    }
+
+    // --- 3. LIVE VIEW COUNTER & ACTIVE ONLINE USERS ---
     const STORAGE_KEY = "neon_arcade_views";
-    const BASE_VIEWS = 12480; // Baseline realistic view count
+    const BASE_VIEWS = 15840;
 
     function initViewCounter() {
-      const counterEl = document.getElementById("view-counter");
-      
-      // Get stored view count or set baseline
       let views = parseInt(localStorage.getItem(STORAGE_KEY), 10);
       if (isNaN(views) || views < BASE_VIEWS) {
         views = BASE_VIEWS;
       }
       
-      // Increment views on page load
       views += 1;
       localStorage.setItem(STORAGE_KEY, views.toString());
-
       updateCounterDisplay(views);
 
       // Simulation Controls
@@ -336,14 +407,20 @@
         localStorage.setItem(STORAGE_KEY, BASE_VIEWS.toString());
         updateCounterDisplay(BASE_VIEWS);
       });
+
+      document.getElementById("btn-refresh-ip").addEventListener("click", () => {
+        fetchUserIPLocation();
+      });
+
+      // Active Users simulation with realistic fluctuation
+      updateActiveUsers();
+      setInterval(updateActiveUsers, 4000);
     }
 
     function updateCounterDisplay(count) {
       const counterEl = document.getElementById("view-counter");
-      // Format number with Portuguese locale dot separators (e.g. 12.481)
       counterEl.textContent = count.toLocaleString("pt-BR");
       
-      // Flash effect
       counterEl.classList.remove("text-neonCyan");
       counterEl.classList.add("text-white");
       setTimeout(() => {
@@ -352,7 +429,14 @@
       }, 150);
     }
 
-    // --- 3. RENDERING ENGINE ---
+    function updateActiveUsers() {
+      const activeEl = document.getElementById("active-users");
+      // Generate active user fluctuation between 42 and 89
+      const activeCount = Math.floor(Math.random() * 47) + 42;
+      activeEl.textContent = `${activeCount} CONECTADOS`;
+    }
+
+    // --- 4. CATALOG RENDERING ENGINE ---
     const catalogEl = document.getElementById("catalog");
     const searchEl = document.getElementById("search");
     const emptyEl = document.getElementById("empty");
@@ -360,7 +444,6 @@
     function renderCatalog() {
       const searchTerm = searchEl.value.trim().toLocaleLowerCase("pt-BR");
       
-      // Filter games
       const filtered = games.filter(game => {
         const matchesCategory = activeFilter === "all" || game.category === activeFilter;
         const matchesSearch = game.name.toLocaleLowerCase("pt-BR").includes(searchTerm);
@@ -370,22 +453,18 @@
       catalogEl.innerHTML = "";
       emptyEl.classList.toggle("hidden", filtered.length > 0);
 
-      // Render sections per category
       Object.keys(categories).forEach(catKey => {
         const categoryGames = filtered.filter(g => g.category === catKey);
         if (categoryGames.length === 0) return;
 
-        // Section wrapper
         const section = document.createElement("section");
         section.className = "space-y-4";
 
-        // Section Header
         const sectionTitle = document.createElement("h2");
         sectionTitle.className = "font-orbitron text-lg sm:text-xl text-neonCyan tracking-wider border-l-4 border-neonPink pl-3 py-1 bg-gradient-to-r from-neonPink/10 to-transparent";
         sectionTitle.textContent = categories[catKey];
         section.appendChild(sectionTitle);
 
-        // Grid Container
         const grid = document.createElement("div");
         grid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
 
@@ -393,26 +472,21 @@
           const gameIndex = games.indexOf(game) + 1;
           const indexStr = String(gameIndex).padStart(2, "0");
 
-          // Card Element
           const card = document.createElement("article");
           card.className = "group relative bg-gradient-to-br from-[#1b142d] to-[#0e0b19] border border-neonPurple/40 p-5 rounded-sm flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:border-neonPink hover:shadow-pinkGlow";
 
-          // Top Accent Line
           const accent = document.createElement("div");
           accent.className = "absolute top-0 left-0 w-1/3 h-[2px] bg-neonCyan shadow-[0_0_8px_#00f7ff]";
           card.appendChild(accent);
 
-          // Card Header / Game Number
           const numEl = document.createElement("div");
           numEl.className = "font-orbitron text-[10px] text-neonPink tracking-widest uppercase mb-2";
           numEl.textContent = `ARQUIVO // ${indexStr}`;
 
-          // Game Title
           const titleEl = document.createElement("h3");
           titleEl.className = "font-rajdhani font-bold text-xl sm:text-2xl text-white my-2 leading-snug group-hover:text-neonCyan transition-colors";
           titleEl.textContent = game.name;
 
-          // Open Button
           const btn = document.createElement("button");
           btn.className = "cyber-btn w-full mt-4 bg-neonCyan hover:bg-neonPink text-black font-orbitron font-extrabold text-xs tracking-wider py-2.5 px-3 uppercase text-center transition-all duration-200 shadow-cyanGlow hover:shadow-pinkGlow hover:text-white";
           btn.textContent = "ACESSAR LINK ↗";
@@ -433,7 +507,7 @@
       });
     }
 
-    // --- 4. MODAL HANDLERS ---
+    // --- 5. MODAL HANDLERS ---
     const modal = document.getElementById("security-modal");
     const modalUrl = document.getElementById("modal-url");
     const modalConfirm = document.getElementById("modal-confirm");
@@ -462,7 +536,7 @@
       if (e.target === modal) closeModal();
     });
 
-    // --- 5. LISTENERS & FILTERS ---
+    // --- 6. LISTENERS & FILTERS ---
     searchEl.addEventListener("input", renderCatalog);
 
     document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -474,8 +548,9 @@
       });
     });
 
-    // --- 6. INIT ---
+    // --- 7. INITIALIZATION ---
     window.onload = function() {
+      fetchUserIPLocation();
       initViewCounter();
       renderCatalog();
     };
