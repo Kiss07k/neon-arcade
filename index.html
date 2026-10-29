@@ -1,396 +1,484 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090713">
-<title>NEON ARCADE // Jogos Online</title>
-<script type="text/javascript" src="https://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=Q_g1rPPbgGF743y6yIpnXOJgwtazHtRWbH1bgq47bI6SsjTmF4SNKw-K_Ly_pNuVpolXZu0rPVm0dLDV6YmjxX_hXvsowr4epyHPxvy4pJA" charset="UTF-8"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap');
-:root {
-  --bg: #090713;
-  --panel: #131023;
-  --pink: #ff2bd6;
-  --cyan: #00f7ff;
-  --purple: #8b35ff;
-  --text: #f3edff;
-  --muted: #a79abf;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at 15% 0%, #30104b66, transparent 40%),
-    radial-gradient(ellipse at 90% 30%, #003d4d44, transparent 35%),
-    var(--bg);
-  font-family: 'Rajdhani', sans-serif;
-  min-height: 100vh;
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .12;
-  z-index: 5;
-  background: repeating-linear-gradient(
-    transparent 0px, transparent 3px,
-    #fff 4px, transparent 5px
-  );
-}
-header {
-  padding: 45px 20px 30px;
-  text-align: center;
-  border-bottom: 1px solid #ff2bd633;
-  background: linear-gradient(180deg, #170c29aa, transparent);
-}
-.tag {
-  color: var(--cyan);
-  letter-spacing: 5px;
-  font-size: 12px;
-  font-weight: 700;
-}
-h1 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(32px, 7vw, 68px);
-  line-height: 1.15;
-  margin: 18px 0 10px;
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 0 10px var(--pink), 0 0 35px #ff2bd677;
-}
-h1 span { color: var(--cyan); }
-.subtitle {
-  color: var(--muted);
-  font-size: 18px;
-}
-.status-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-.status {
-  display: inline-block;
-  border: 1px solid #00f7ff66;
-  color: var(--cyan);
-  padding: 7px 14px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  background: #00f7ff11;
-}
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 25px 20px 60px;
-}
-.search-wrap {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-input {
-  width: 100%;
-  min-width: 0;
-  padding: 15px 18px;
-  color: white;
-  background: #100c1e;
-  border: 1px solid #8b35ff77;
-  outline: none;
-  font: 600 17px 'Rajdhani', sans-serif;
-}
-input:focus {
-  border-color: var(--cyan);
-  box-shadow: 0 0 15px #00f7ff22;
-}
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 18px 0 35px;
-}
-.filter {
-  color: var(--muted);
-  background: #151023;
-  border: 1px solid #4b3565;
-  padding: 9px 13px;
-  cursor: pointer;
-  font: 600 14px 'Rajdhani', sans-serif;
-  transition: .2s;
-}
-.filter:hover, .filter.active {
-  color: #fff;
-  border-color: var(--pink);
-  background: #ff2bd61b;
-  box-shadow: 0 0 12px #ff2bd622;
-}
-.section-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 19px;
-  margin: 38px 0 17px;
-  color: var(--cyan);
-  letter-spacing: 1px;
-  border-left: 3px solid var(--pink);
-  padding: 8px 12px;
-  background: linear-gradient(90deg, #ff2bd615, transparent);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 15px;
-}
-.game {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(145deg, #1b142d, #0e0b19);
-  border: 1px solid #8b35ff44;
-  padding: 19px;
-  min-height: 165px;
-  display: flex;
-  flex-direction: column;
-  transition: transform .2s, border-color .2s, box-shadow .2s;
-}
-.game::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 35%;
-  height: 2px;
-  background: var(--cyan);
-  box-shadow: 0 0 12px var(--cyan);
-}
-.game:hover {
-  transform: translateY(-4px);
-  border-color: var(--pink);
-  box-shadow: 0 8px 30px #ff2bd615;
-}
-.game-number {
-  font: 10px 'Orbitron', sans-serif;
-  color: var(--pink);
-  letter-spacing: 2px;
-}
-.game h3 {
-  font-size: 21px;
-  margin: 12px 0 18px;
-  line-height: 1.2;
-}
-.open-btn {
-  display: block;
-  margin-top: auto;
-  text-align: center;
-  text-decoration: none;
-  color: #080713;
-  background: var(--cyan);
-  padding: 11px;
-  font: 800 12px 'Orbitron', sans-serif;
-  letter-spacing: 1px;
-  clip-path: polygon(0 0, 100% 0, 100% 75%, 92% 100%, 0 100%);
-  cursor: pointer;
-  border: none;
-}
-.open-btn:hover {
-  background: var(--pink);
-  box-shadow: 0 0 18px #ff2bd655;
-}
-.notice {
-  margin: 30px 0;
-  padding: 18px;
-  border: 1px solid #ffb52b77;
-  background: #ffb52b0a;
-  color: #e7d8bc;
-  line-height: 1.6;
-}
-.notice strong { color: #ffc857; }
-footer {
-  text-align: center;
-  padding: 30px 15px;
-  border-top: 1px solid #8b35ff44;
-  color: var(--muted);
-  font-size: 14px;
-}
-footer span { color: var(--pink); }
-.empty {
-  display: none;
-  padding: 30px;
-  text-align: center;
-  color: var(--muted);
-}
-@media(max-width: 550px) {
-  header { padding-top: 35px; }
-  .container { padding-inline: 14px; }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .game { padding: 13px; min-height: 155px; }
-  .game h3 { font-size: 18px; }
-  .section-title { font-size: 15px; }
-}
-@media(max-width: 350px) {
-  .grid { grid-template-columns: 1fr; }
-}
-</style>
-</head>
-<body>
-<header>
-  <div class="tag">[ SYSTEM ONLINE // 2077 ]</div>
-  <h1>NEON <span>ARCADE</span></h1>
-  <div class="subtitle">Entre no jogo. Sem downloads. Explore a rede.</div>
-  <div class="status-wrapper">
-    <div class="status">● DATABASE // 26 ENTRADAS</div>
-    <div class="status" id="view-counter">👁 VISTAS // CARREGANDO...</div>
-  </div>
-</header>
-<main class="container">
-  <div class="search-wrap">
-    <input id="search" type="search"
-      placeholder="⌕ Buscar jogo na rede..."
-      aria-label="Buscar jogo">
-  </div>
-  <div class="filters" id="filters">
-    <button class="filter active" data-filter="all">TODOS</button>
-    <button class="filter" data-filter="aventura">MUNDO ABERTO</button>
-    <button class="filter" data-filter="esportes">ESPORTES</button>
-    <button class="filter" data-filter="zumbis">ZUMBIS</button>
-    <button class="filter" data-filter="fps">FPS / TIRO</button>
-    <button class="filter" data-filter="rpg">RPG</button>
-  </div>
-  <div class="notice">
-    <strong>⚠ AVISO DE SEGURANÇA</strong><br>
-    Estes links foram reunidos de uma lista de terceiros e não foram
-    verificados individualmente. Alguns podem estar indisponíveis ou
-    redirecionar para sites desconhecidos. Não baixe arquivos, não instale
-    extensões e não forneça senhas ou dados pessoais.
-  </div>
-  <div id="catalog"></div>
-  <div class="empty" id="empty">NENHUM JOGO ENCONTRADO NA REDE.</div>
-</main>
-<footer>
-  NEON ARCADE <span>///</span> FAN PROJECT<br>
-  Links externos pertencem aos respectivos responsáveis.</footer>
-<script>
-// Contador de vistas utilizando CountAPI (Gratuito e público)
-async function atualizarContadorVistas() {
-  const counterElement = document.getElementById("view-counter");
-  try {
-    // Faz uma requisição para incrementar a visita (mude 'neon-arcade-site-principal' se preferir outro ID único)
-    const response = await fetch("https://api.countapi.xyz/hit/neon-arcade-site-principal/visitas");
-    const data = await response.json();
-    if (data && typeof data.value === "number") {
-      // Formata o número com separadores ou zeros à esquerda, mantendo o estilo
-      const visualizacoes = data.value.toLocaleString("pt-BR");
-      counterElement.textContent = `👁 VISITAS // ${visualizacoes}`;
-    } else {
-      counterElement.textContent = "👁 VISITAS // INDISPONÍVEL";
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090713">
+  <title>NEON ARCADE // Jogos Online</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neonBg: '#090713',
+            neonPanel: '#131023',
+            neonPink: '#ff2bd6',
+            neonCyan: '#00f7ff',
+            neonPurple: '#8b35ff',
+            neonText: '#f3edff',
+            neonMuted: '#a79abf',
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            rajdhani: ['Rajdhani', 'sans-serif'],
+          },
+          boxShadow: {
+            cyanGlow: '0 0 15px rgba(0, 247, 255, 0.4)',
+            pinkGlow: '0 0 20px rgba(255, 43, 214, 0.4)',
+            purpleGlow: '0 0 20px rgba(139, 53, 255, 0.3)',
+          }
+        }
+      }
     }
-  } catch (error) {
-    counterElement.textContent = "👁 VISITAS // OFFLINE";
-  }
-}
+  </script>
 
-atualizarContadorVistas();
+  <style>
+    /* Custom Cyberpunk Overlay Effects */
+    body {
+      background-color: #090713;
+      background-image: 
+        radial-gradient(ellipse at 15% 0%, rgba(48, 16, 75, 0.45), transparent 45%),
+        radial-gradient(ellipse at 90% 30%, rgba(0, 61, 77, 0.35), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(139, 53, 255, 0.15), transparent 50%);
+      background-attachment: fixed;
+      font-family: 'Rajdhani', sans-serif;
+      color: #f3edff;
+    }
 
-const games = [
-  {name:"GTA 5", category:"aventura", url:"https://fiveplay.lol/"},
-  {name:"GTA 5 — Versão arquivada", category:"aventura", url:"https://t.co/afFWyUoZul"},
-  {name:"GTA Vice City", category:"aventura", url:"https://t.co/oUAqFm24XM"},
-  {name:"The Simpsons: Hit & Run", category:"aventura", url:"https://t.co/tE3I3G7Z3E"},
-  {name:"Skate 3", category:"aventura", url:"https://t.co/72xdXZjsdX"},
-  {name:"Skate / Rust", category:"aventura", url:"https://t.co/3OCb0o8TpA"},
-  {name:"Mais GTA, Minecraft e outros", category:"aventura", url:"https://t.co/Y3rHkVJsBq"},
-  {name:"PES 6", category:"esportes", url:"https://t.co/JRBh7uypA3"},
-  {name:"Hedgewars", category:"esportes", url:"https://t.co/f8dVc91nDD"},
-  {name:"Black Ops 1 Zombies", category:"zumbis", url:"https://t.co/z8ByxlYtlD"},
-  {name:"Moon Zombies", category:"zumbis", url:"https://t.co/cmQLdJICnY"},
-  {name:"Kino der Toten", category:"zumbis", url:"https://t.co/cOFzR1qvLE"},
-  {name:"Black Ops 3 — Cheese Cube", category:"zumbis", url:"https://t.co/4MyR6rSiIr"},
-  {name:"Call of Duty: Black Ops 2", category:"fps", url:"https://t.co/En6XMWofdh"},
-  {name:"Call of Duty: Modern Warfare 2", category:"fps", url:"https://t.co/hdyMM0ANjf"},
-  {name:"Halo: Combat Evolved", category:"fps", url:"https://t.co/Ysx7pWuKrV"},
-  {name:"Halo CE Mobile", category:"fps", url:"https://t.co/07VdSWuSAB"},
-  {name:"Quake 1", category:"fps", url:"https://t.co/7yaF9eCcac"},
-  {name:"Quake 2", category:"fps", url:"https://t.co/9UeRDUnVe8"},
-  {name:"Quake 3", category:"fps", url:"https://t.co/EH1ABmU0e5"},
-  {name:"Return to Castle Wolfenstein", category:"fps", url:"https://t.co/De1X3ZzdkI"},
-  {name:"Unreal Tournament", category:"fps", url:"https://t.co/WGodzf14xO"},
-  {name:"Half-Life", category:"fps", url:"https://t.co/acQB4xKTDK"},
-  {name:"Half-Life / Counter-Strike 1.6", category:"fps", url:"https://t.co/b7KBcVcJ97"},
-  {name:"Counter-Strike Surf", category:"fps", url:"https://t.co/e6MSIKGJEo"},
-  {name:"Diablo", category:"rpg", url:"https://t.co/0lCxQz6JNC"}
-];
-const categories = {
-  aventura: "🌆 MUNDO ABERTO / AVENTURA",
-  esportes: "⚽ ESPORTES",
-  zumbis: "🧟 ZUMBIS / CALL OF DUTY",
-  fps: "🔫 FPS / TIRO",
-  rpg: "⚔ RPG"
-};
-let activeFilter = "all";
-const catalog = document.getElementById("catalog");
-const search = document.getElementById("search");
-const empty = document.getElementById("empty");
-function render() {
-  const term = search.value.trim().toLocaleLowerCase("pt-BR");
-  const filtered = games.filter(game =>
-    (activeFilter === "all" || game.category === activeFilter) &&
-    game.name.toLocaleLowerCase("pt-BR").includes(term)
-  );
-  catalog.replaceChildren();
-  empty.style.display = filtered.length ? "none" : "block";
-  Object.keys(categories).forEach(category => {
-    const items = filtered.filter(game => game.category === category);
-    if (!items.length) return;
-    const section = document.createElement("section");
-    const title = document.createElement("h2");
-    title.className = "section-title";
-    title.textContent = categories[category];
-    section.appendChild(title);
-    const grid = document.createElement("div");
-    grid.className = "grid";
-    items.forEach(game => {
-      const card = document.createElement("article");
-      card.className = "game";
-      const number = document.createElement("div");
-      number.className = "game-number";
-      number.textContent = "ARQUIVO // " +
-        String(games.indexOf(game) + 1).padStart(2, "0");
-      const name = document.createElement("h3");
-      name.textContent = game.name;
-      const link = document.createElement("a");
-      link.className = "open-btn";
-      link.href = game.url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "ACESSAR LINK ↗";
-      link.addEventListener("click", event => {
-        const confirmed = window.confirm(
-          "Você está saindo do NEON ARCADE para um site externo:\n\n" +
-          game.url +
-          "\n\nO destino pode não ser seguro ou estar indisponível. " +
-          "Deseja continuar?"
-        );
-        if (!confirmed) event.preventDefault();
+    /* CRT Scanlines Effect */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      z-index: 99;
+      background: repeating-linear-gradient(
+        transparent 0px, transparent 3px,
+        #fff 4px, transparent 5px
+      );
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090713;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8b35ff;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f7ff;
+    }
+
+    /* Glitch / Glow Animation utilities */
+    .neon-text-pink {
+      text-shadow: 0 0 10px #ff2bd6, 0 0 30px rgba(255, 43, 214, 0.6);
+    }
+    .neon-text-cyan {
+      text-shadow: 0 0 10px #00f7ff, 0 0 25px rgba(0, 247, 255, 0.6);
+    }
+
+    /* Cyberpunk clip corner */
+    .cyber-btn {
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+      transition: all 0.2s ease-in-out;
+    }
+    .cyber-btn:hover {
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-neonPink selection:text-black">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="relative border-b border-neonPink/20 bg-gradient-to-b from-[#170c29]/80 to-transparent pt-10 pb-8 px-4 text-center">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- System Tag -->
+      <div class="font-orbitron text-neonCyan text-xs tracking-[0.3em] font-bold uppercase mb-2 animate-pulse">
+        [ SYSTEM ONLINE // NET_NODE_2077 ]
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="font-orbitron text-4xl sm:text-6xl md:text-7xl font-black my-3 tracking-wider text-white">
+        NEON <span class="text-neonCyan neon-text-cyan">ARCADE</span>
+      </h1>
+      
+      <p class="text-neonMuted text-base sm:text-lg font-medium max-w-xl mx-auto">
+        Entre no jogo. Sem downloads. Explore a rede com velocidade cyberpunk.
+      </p>
+
+      <!-- Status & View Counter Panel -->
+      <div class="mt-6 flex flex-wrap justify-center items-center gap-3 font-orbitron text-xs tracking-widest">
+        <!-- Database Badge -->
+        <div class="bg-neonPanel/90 border border-neonCyan/40 text-neonCyan px-3 py-2 rounded-sm shadow-[0_0_10px_rgba(0,247,255,0.15)]">
+          ● DATABASE // <span id="game-count">26</span> ENTRADAS
+        </div>
+
+        <!-- Dynamic Live View Counter -->
+        <div class="bg-neonPanel/90 border border-neonPink/50 text-neonPink px-3 py-2 rounded-sm flex items-center gap-2 shadow-[0_0_12px_rgba(255,43,214,0.2)]">
+          <span class="inline-block w-2 h-2 rounded-full bg-neonPink animate-ping"></span>
+          <span>👁 VISITAS //</span>
+          <span id="view-counter" class="font-bold text-white tracking-normal font-mono text-sm">CARREGANDO...</span>
+        </div>
+
+        <!-- Interactive Simulation Controls for Counter -->
+        <div class="bg-black/50 border border-neonPurple/40 px-2 py-1.5 rounded-sm flex items-center gap-1.5 text-[10px] text-neonMuted">
+          <span class="hidden sm:inline">SIMULAR:</span>
+          <button id="btn-boost" title="Simular +1 Visualização" class="bg-neonPurple/30 hover:bg-neonPurple/60 text-neonCyan px-2 py-0.5 rounded border border-neonPurple/50 transition">
+            +1 VISTA
+          </button>
+          <button id="btn-reset" title="Reiniciar Contador Local" class="bg-red-900/30 hover:bg-red-800/50 text-red-300 px-2 py-0.5 rounded border border-red-500/40 transition">
+            RESET
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-8 flex-grow">
+
+    <!-- SEARCH & CONTROLS -->
+    <div class="mb-8 space-y-5">
+      <!-- Search Box -->
+      <div class="relative">
+        <input 
+          id="search" 
+          type="search" 
+          placeholder="⌕ Buscar jogo ou franquia na rede..." 
+          aria-label="Buscar jogo"
+          class="w-full bg-[#100c1e] text-white placeholder-neonMuted/60 px-5 py-4 border border-neonPurple/50 rounded-sm focus:outline-none focus:border-neonCyan focus:ring-2 focus:ring-neonCyan/30 text-lg transition duration-200"
+        >
+      </div>
+
+      <!-- Category Filter Buttons -->
+      <div class="flex flex-wrap gap-2 text-sm font-semibold" id="filters">
+        <button class="filter-btn active-filter" data-filter="all">TODOS</button>
+        <button class="filter-btn" data-filter="aventura">MUNDO ABERTO</button>
+        <button class="filter-btn" data-filter="esportes">ESPORTES</button>
+        <button class="filter-btn" data-filter="zumbis">ZUMBIS</button>
+        <button class="filter-btn" data-filter="fps">FPS / TIRO</button>
+        <button class="filter-btn" data-filter="rpg">RPG</button>
+      </div>
+    </div>
+
+    <!-- SECURITY NOTICE -->
+    <div class="my-6 p-4 border border-yellow-500/40 bg-yellow-500/5 rounded-sm text-yellow-200/90 text-sm leading-relaxed relative">
+      <div class="font-orbitron font-bold text-yellow-400 mb-1 flex items-center gap-2">
+        <span>⚠ AVISO DE SEGURANÇA</span>
+      </div>
+      Estes links foram reunidos de uma lista de terceiros e não foram verificados individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensões desconhecidas e proteja seus dados pessoais.
+    </div>
+
+    <!-- CATALOG CONTENT -->
+    <div id="catalog" class="space-y-10"></div>
+
+    <!-- EMPTY STATE -->
+    <div id="empty" class="hidden text-center py-16 text-neonMuted font-orbitron border border-dashed border-neonPurple/30 rounded-lg my-8">
+      <p class="text-xl mb-2 text-neonPink">NENHUM ARQUIVO ENCONTRADO NA REDE</p>
+      <p class="text-sm text-neonMuted">Tente buscar por outros termos ou selecionar outra categoria.</p>
+    </div>
+
+  </main>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="security-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#131023] border-2 border-neonPink w-full max-w-md p-6 rounded-sm shadow-pinkGlow relative animate-in fade-in zoom-in duration-150">
+      <div class="font-orbitron text-neonPink text-lg font-bold mb-3 flex items-center gap-2">
+        <span>⚠ SAÍDA DO DOMÍNIO</span>
+      </div>
+      <p class="text-neonText text-sm mb-3">
+        Você está se conectando a um servidor externo fora do NEON ARCADE:
+      </p>
+      <div id="modal-url" class="font-mono text-xs bg-black/60 p-3 text-neonCyan break-all border border-neonCyan/30 mb-4 rounded">
+        https://...
+      </div>
+      <p class="text-xs text-neonMuted mb-6">
+        Certifique-se de não inserir senhas ou fazer download de arquivos não confiáveis.
+      </p>
+
+      <div class="flex justify-end gap-3 font-orbitron text-xs">
+        <button id="modal-cancel" class="px-4 py-2 bg-gray-800 text-gray-300 hover:bg-gray-700 transition rounded-sm">
+          CANCELAR
+        </button>
+        <button id="modal-confirm" class="px-5 py-2 bg-neonCyan text-black font-bold hover:bg-neonPink hover:text-white transition rounded-sm shadow-cyanGlow">
+          CONTINUAR ↗
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="text-center py-8 px-4 border-t border-neonPurple/30 text-neonMuted text-sm font-rajdhani bg-[#06040d]">
+    <div class="max-w-6xl mx-auto space-y-1">
+      <p class="font-orbitron text-xs tracking-wider">
+        NEON ARCADE <span class="text-neonPink">///</span> FAN PROJECT 2077
+      </p>
+      <p class="text-xs text-neonMuted/60">
+        Links externos pertencem aos seus respectivos responsáveis e servidores originais.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Inline CSS Styles for Filter Buttons -->
+  <style>
+    .filter-btn {
+      color: #a79abf;
+      background-color: #151023;
+      border: 1px solid #4b3565;
+      padding: 8px 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: all 0.2s ease;
+      border-radius: 2px;
+    }
+    .filter-btn:hover {
+      color: #ffffff;
+      border-color: #ff2bd6;
+      background-color: rgba(255, 43, 214, 0.15);
+      box-shadow: 0 0 10px rgba(255, 43, 214, 0.25);
+    }
+    .filter-btn.active-filter {
+      color: #ffffff;
+      border-color: #ff2bd6;
+      background-color: rgba(255, 43, 214, 0.25);
+      box-shadow: 0 0 12px rgba(255, 43, 214, 0.35);
+    }
+  </style>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- 1. DATA CATALOG ---
+    const games = [
+      { name: "GTA 5", category: "aventura", url: "https://fiveplay.lol/" },
+      { name: "GTA 5 — Versão arquivada", category: "aventura", url: "https://t.co/afFWyUoZul" },
+      { name: "GTA Vice City", category: "aventura", url: "https://t.co/oUAqFm24XM" },
+      { name: "The Simpsons: Hit & Run", category: "aventura", url: "https://t.co/tE3I3G7Z3E" },
+      { name: "Skate 3", category: "aventura", url: "https://t.co/72xdXZjsdX" },
+      { name: "Skate / Rust", category: "aventura", url: "https://t.co/3OCb0o8TpA" },
+      { name: "Mais GTA, Minecraft e outros", category: "aventura", url: "https://t.co/Y3rHkVJsBq" },
+      { name: "PES 6", category: "esportes", url: "https://t.co/JRBh7uypA3" },
+      { name: "Hedgewars", category: "esportes", url: "https://t.co/f8dVc91nDD" },
+      { name: "Black Ops 1 Zombies", category: "zumbis", url: "https://t.co/z8ByxlYtlD" },
+      { name: "Moon Zombies", category: "zumbis", url: "https://t.co/cmQLdJICnY" },
+      { name: "Kino der Toten", category: "zumbis", url: "https://t.co/cOFzR1qvLE" },
+      { name: "Black Ops 3 — Cheese Cube", category: "zumbis", url: "https://t.co/4MyR6rSiIr" },
+      { name: "Call of Duty: Black Ops 2", category: "fps", url: "https://t.co/En6XMWofdh" },
+      { name: "Call of Duty: Modern Warfare 2", category: "fps", url: "https://t.co/hdyMM0ANjf" },
+      { name: "Halo: Combat Evolved", category: "fps", url: "https://t.co/Ysx7pWuKrV" },
+      { name: "Halo CE Mobile", category: "fps", url: "https://t.co/07VdSWuSAB" },
+      { name: "Quake 1", category: "fps", url: "https://t.co/7yaF9eCcac" },
+      { name: "Quake 2", category: "fps", url: "https://t.co/9UeRDUnVe8" },
+      { name: "Quake 3", category: "fps", url: "https://t.co/EH1ABmU0e5" },
+      { name: "Return to Castle Wolfenstein", category: "fps", url: "https://t.co/De1X3ZzdkI" },
+      { name: "Unreal Tournament", category: "fps", url: "https://t.co/WGodzf14xO" },
+      { name: "Half-Life", category: "fps", url: "https://t.co/acQB4xKTDK" },
+      { name: "Half-Life / Counter-Strike 1.6", category: "fps", url: "https://t.co/b7KBcVcJ97" },
+      { name: "Counter-Strike Surf", category: "fps", url: "https://t.co/e6MSIKGJEo" },
+      { name: "Diablo", category: "rpg", url: "https://t.co/0lCxQz6JNC" }
+    ];
+
+    const categories = {
+      aventura: "🌆 MUNDO ABERTO / AVENTURA",
+      esportes: "⚽ ESPORTES",
+      zumbis: "🧟 ZUMBIS / CALL OF DUTY",
+      fps: "🔫 FPS / TIRO",
+      rpg: "⚔ RPG"
+    };
+
+    let activeFilter = "all";
+    let pendingRedirectUrl = null;
+
+    // --- 2. LIVE VIEW COUNTER LOGIC ---
+    const STORAGE_KEY = "neon_arcade_views";
+    const BASE_VIEWS = 12480; // Baseline realistic view count
+
+    function initViewCounter() {
+      const counterEl = document.getElementById("view-counter");
+      
+      // Get stored view count or set baseline
+      let views = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+      if (isNaN(views) || views < BASE_VIEWS) {
+        views = BASE_VIEWS;
+      }
+      
+      // Increment views on page load
+      views += 1;
+      localStorage.setItem(STORAGE_KEY, views.toString());
+
+      updateCounterDisplay(views);
+
+      // Simulation Controls
+      document.getElementById("btn-boost").addEventListener("click", () => {
+        let current = parseInt(localStorage.getItem(STORAGE_KEY), 10) || BASE_VIEWS;
+        current += 1;
+        localStorage.setItem(STORAGE_KEY, current.toString());
+        updateCounterDisplay(current);
       });
-      card.append(number, name, link);
-      grid.appendChild(card);
+
+      document.getElementById("btn-reset").addEventListener("click", () => {
+        localStorage.setItem(STORAGE_KEY, BASE_VIEWS.toString());
+        updateCounterDisplay(BASE_VIEWS);
+      });
+    }
+
+    function updateCounterDisplay(count) {
+      const counterEl = document.getElementById("view-counter");
+      // Format number with Portuguese locale dot separators (e.g. 12.481)
+      counterEl.textContent = count.toLocaleString("pt-BR");
+      
+      // Flash effect
+      counterEl.classList.remove("text-neonCyan");
+      counterEl.classList.add("text-white");
+      setTimeout(() => {
+        counterEl.classList.remove("text-white");
+        counterEl.classList.add("text-neonCyan");
+      }, 150);
+    }
+
+    // --- 3. RENDERING ENGINE ---
+    const catalogEl = document.getElementById("catalog");
+    const searchEl = document.getElementById("search");
+    const emptyEl = document.getElementById("empty");
+
+    function renderCatalog() {
+      const searchTerm = searchEl.value.trim().toLocaleLowerCase("pt-BR");
+      
+      // Filter games
+      const filtered = games.filter(game => {
+        const matchesCategory = activeFilter === "all" || game.category === activeFilter;
+        const matchesSearch = game.name.toLocaleLowerCase("pt-BR").includes(searchTerm);
+        return matchesCategory && matchesSearch;
+      });
+
+      catalogEl.innerHTML = "";
+      emptyEl.classList.toggle("hidden", filtered.length > 0);
+
+      // Render sections per category
+      Object.keys(categories).forEach(catKey => {
+        const categoryGames = filtered.filter(g => g.category === catKey);
+        if (categoryGames.length === 0) return;
+
+        // Section wrapper
+        const section = document.createElement("section");
+        section.className = "space-y-4";
+
+        // Section Header
+        const sectionTitle = document.createElement("h2");
+        sectionTitle.className = "font-orbitron text-lg sm:text-xl text-neonCyan tracking-wider border-l-4 border-neonPink pl-3 py-1 bg-gradient-to-r from-neonPink/10 to-transparent";
+        sectionTitle.textContent = categories[catKey];
+        section.appendChild(sectionTitle);
+
+        // Grid Container
+        const grid = document.createElement("div");
+        grid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+
+        categoryGames.forEach(game => {
+          const gameIndex = games.indexOf(game) + 1;
+          const indexStr = String(gameIndex).padStart(2, "0");
+
+          // Card Element
+          const card = document.createElement("article");
+          card.className = "group relative bg-gradient-to-br from-[#1b142d] to-[#0e0b19] border border-neonPurple/40 p-5 rounded-sm flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:border-neonPink hover:shadow-pinkGlow";
+
+          // Top Accent Line
+          const accent = document.createElement("div");
+          accent.className = "absolute top-0 left-0 w-1/3 h-[2px] bg-neonCyan shadow-[0_0_8px_#00f7ff]";
+          card.appendChild(accent);
+
+          // Card Header / Game Number
+          const numEl = document.createElement("div");
+          numEl.className = "font-orbitron text-[10px] text-neonPink tracking-widest uppercase mb-2";
+          numEl.textContent = `ARQUIVO // ${indexStr}`;
+
+          // Game Title
+          const titleEl = document.createElement("h3");
+          titleEl.className = "font-rajdhani font-bold text-xl sm:text-2xl text-white my-2 leading-snug group-hover:text-neonCyan transition-colors";
+          titleEl.textContent = game.name;
+
+          // Open Button
+          const btn = document.createElement("button");
+          btn.className = "cyber-btn w-full mt-4 bg-neonCyan hover:bg-neonPink text-black font-orbitron font-extrabold text-xs tracking-wider py-2.5 px-3 uppercase text-center transition-all duration-200 shadow-cyanGlow hover:shadow-pinkGlow hover:text-white";
+          btn.textContent = "ACESSAR LINK ↗";
+          
+          btn.addEventListener("click", () => {
+            openSecurityModal(game.url);
+          });
+
+          card.appendChild(numEl);
+          card.appendChild(titleEl);
+          card.appendChild(btn);
+
+          grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+        catalogEl.appendChild(section);
+      });
+    }
+
+    // --- 4. MODAL HANDLERS ---
+    const modal = document.getElementById("security-modal");
+    const modalUrl = document.getElementById("modal-url");
+    const modalConfirm = document.getElementById("modal-confirm");
+    const modalCancel = document.getElementById("modal-cancel");
+
+    function openSecurityModal(url) {
+      pendingRedirectUrl = url;
+      modalUrl.textContent = url;
+      modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      pendingRedirectUrl = null;
+      modal.classList.add("hidden");
+    }
+
+    modalConfirm.addEventListener("click", () => {
+      if (pendingRedirectUrl) {
+        window.open(pendingRedirectUrl, "_blank", "noopener,noreferrer");
+      }
+      closeModal();
     });
-    section.appendChild(grid);
-    catalog.appendChild(section);
-  });
-}
-search.addEventListener("input", render);
-document.querySelectorAll(".filter").forEach(button => {
-  button.addEventListener("click", () => {
-    activeFilter = button.dataset.filter;
-    document.querySelectorAll(".filter").forEach(item => {
-      item.classList.toggle("active", item === button);
+
+    modalCancel.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
     });
-    render();
-  });
-});
-render();
-</script>
+
+    // --- 5. LISTENERS & FILTERS ---
+    searchEl.addEventListener("input", renderCatalog);
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active-filter"));
+        btn.classList.add("active-filter");
+        activeFilter = btn.dataset.filter;
+        renderCatalog();
+      });
+    });
+
+    // --- 6. INIT ---
+    window.onload = function() {
+      initViewCounter();
+      renderCatalog();
+    };
+  </script>
 </body>
 </html>
