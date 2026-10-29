@@ -194,14 +194,8 @@
         </div>
 
         <div class="bg-black/60 border border-neonPurple/50 px-2.5 py-1.5 rounded-sm flex items-center gap-1.5 text-[10px] text-neonMuted">
-          <button id="btn-boost" title="Simular +1 Visualização" class="bg-neonPurple/30 hover:bg-neonPurple/60 text-neonCyan px-2.5 py-1.5 rounded border border-neonPurple/50 transition font-bold active:scale-95 touch-manipulation">
-            +1 VISTA
-          </button>
           <button id="btn-refresh-ip" title="Recarregar Localização IP" class="bg-neonCyan/20 hover:bg-neonCyan/40 text-neonCyan px-2.5 py-1.5 rounded border border-neonCyan/50 transition font-bold active:scale-95 touch-manipulation">
             ↻ IP
-          </button>
-          <button id="btn-reset" title="Reiniciar Contador Local" class="bg-red-900/30 hover:bg-red-800/50 text-red-300 px-2.5 py-1.5 rounded border border-red-500/40 transition font-bold active:scale-95 touch-manipulation">
-            RESET
           </button>
         </div>
       </div>
@@ -242,9 +236,13 @@
     <!-- SECURITY NOTICE -->
     <div class="my-6 p-4 border border-yellow-500/40 bg-yellow-500/5 rounded-sm text-yellow-200/90 text-sm leading-relaxed relative">
       <div class="font-orbitron font-bold text-yellow-400 mb-1 flex items-center gap-2">
-        <span>⚠ INDEXAÇÃO TOTAL DE JOGOS EXISTENTES NA INTERNET</span>
+        <span>⚠ PRESERVAÇÃO DIGITAL & INDEXAÇÃO GLOBAL DE REDE</span>
       </div>
-      Todos os 100 milhões de jogos web, HTML5, WebAssembly e ROMs emuladas estão indexados. Ao pesquisar qualquer jogo no campo acima, o sistema localiza automaticamente sua versão jogável online para Celular e PC.
+      Nó de acesso a 100 Milhões de instâncias de preservação web, jogos emulados e títulos HTML5/WebAssembly. Todos os acessos são abertos diretamente pelo seu navegador.
+      <div class="mt-3 pt-3 border-t border-yellow-500/20 text-xs text-yellow-300/90 leading-relaxed font-sans">
+        <span class="font-bold text-yellow-400 font-orbitron block mb-1">⚠ AVISO DE SEGURANÇA</span>
+        Estes links foram reunidos de uma lista de terceiros e não foram verificados individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensões desconhecidas e proteja seus dados pessoais.
+      </div>
     </div>
 
     <!-- CATALOG CONTENT -->
@@ -432,18 +430,6 @@
       views += 1;
       localStorage.setItem(STORAGE_KEY, views.toString());
       updateCounterDisplay(views);
-
-      document.getElementById("btn-boost").addEventListener("click", () => {
-        let current = parseInt(localStorage.getItem(STORAGE_KEY), 10) || BASE_VIEWS;
-        current += 1;
-        localStorage.setItem(STORAGE_KEY, current.toString());
-        updateCounterDisplay(current);
-      });
-
-      document.getElementById("btn-reset").addEventListener("click", () => {
-        localStorage.setItem(STORAGE_KEY, BASE_VIEWS.toString());
-        updateCounterDisplay(BASE_VIEWS);
-      });
 
       document.getElementById("btn-refresh-ip").addEventListener("click", () => {
         fetchUserIPLocation();
