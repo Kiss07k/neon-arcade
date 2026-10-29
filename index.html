@@ -228,7 +228,7 @@
       <div class="font-orbitron font-bold text-yellow-400 mb-1 flex items-center gap-2">
         <span>⚠ AVISO DE SEGURANÇA</span>
       </div>
-      Estes links foram reunidos de uma lista de terceiros e não foram verificados individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensões desconhecidas e proteja seus dados pessoais.
+      Estes links foram reunidos de uma lista de terceiros e não foram todos verificados individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensões desconhecidas e proteja seus dados pessoais.
     </div>
 
     <!-- CATALOG CONTENT -->
