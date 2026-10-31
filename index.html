@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090713">
   
-  <!-- Security Headers (Compatíveis com CDNs e Links Externos de Jogos) -->
+  <!-- Security Headers (Blindagem Avançada & Compatibilidade Total com CDNs e Jogos) -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(self), microphone=(), camera=(), payment=()">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.com https://cdn.tailwindcss.com https://ipapi.co; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://ipapi.co https://*.crazygames.com https://*.playclassic.games https://*.poki.com https://*.retrogames.cc; frame-src *; object-src 'none'; base-uri 'self';">
   <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
   
   <title>NEON ARCADE // 100M+ Jogos Online & Cyber-Node Detector</title>
@@ -170,6 +171,7 @@
         <span class="text-gray-200">
           Se a tela ou o jogo travar e o botão <span class="text-red-400 font-bold px-1.5 py-0.5 border border-red-500/50 bg-black/60 rounded">X</span> não responder:
         </span>
+
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-neonCyan font-bold">PC:</span>
           <kbd class="bg-black/90 text-neonCyan border border-neonCyan/80 px-2 py-0.5 rounded font-bold font-mono text-xs shadow-[0_0_8px_rgba(0,247,255,0.5)] uppercase">
@@ -264,7 +266,7 @@
       Nó de acesso a 100 Milhões de instâncias de preservação web, jogos emulados e títulos HTML5/WebAssembly. Todos os acessos são abertos diretamente pelo seu navegador.
       <div class="mt-3 pt-3 border-t border-yellow-500/20 text-xs text-yellow-300/90 leading-relaxed font-sans">
         <span class="font-bold text-yellow-400 font-orbitron block mb-1">⚠ AVISO DE SEGURANÇA</span>
-        Estes links foram reunidos de uma lista de terceiros e não foram verificados individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensão desconhecida e proteja seus dados pessoais.
+        Estes links foram reunidos de uma lista de terceiros e não foram todos verificados  individualmente. Alguns podem estar indisponíveis ou redirecionar para sites externos. Não baixe arquivos executáveis suspeitos, não instale extensão desconhecida e proteja seus dados pessoais.
       </div>
     </div>
 
@@ -300,12 +302,15 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    // Forçar redirecionamento HTTPS se aberto via HTTP puro
+    if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      window.location.href = 'https://' + window.location.host + window.location.pathname;
+    }
+
     // Total Target Entries
     const TOTAL_ENTRIES = 100000000;
 
-    // Explicit Core Games List - Expande para incluir todos os sucessos conhecidos
     const coreGames = [
-      // POPULARES MOBILE & CRAZYGAMES TOP 50
       { name: "Subway Surfers Web", category: "arcade", mobile: true, url: "https://www.crazygames.com/game/subway-surfers" },
       { name: "Minecraft Classic / Bloxd.io", category: "aventura", mobile: true, url: "https://www.crazygames.com/game/bloxd-io" },
       { name: "Free Fire / 1v1.LOL Mobile", category: "multiplayer", mobile: true, url: "https://www.crazygames.com/game/1v1-lol" },
@@ -323,8 +328,6 @@
       { name: "Time Shooter 2", category: "fps", mobile: true, url: "https://www.crazygames.com/game/time-shooter-2" },
       { name: "Super Mario Bros (Retro Web)", category: "classicos", mobile: true, url: "https://playclassic.games/games/platform-dos-games-online/play-super-mario-bros-online/" },
       { name: "Sonic the Hedgehog", category: "classicos", mobile: true, url: "https://playclassic.games/games/platform-sega-genesis-games-online/play-sonic-the-hedgehog-online/" },
-
-      // CLÁSSICOS PC & ENVIADOS
       { name: "GTA 5 (FivePlay)", category: "aventura", mobile: true, url: "https://fiveplay.lol/" },
       { name: "GTA Vice City", category: "aventura", mobile: false, url: "https://t.co/oUAqFm24XM" },
       { name: "The Simpsons: Hit & Run", category: "aventura", mobile: false, url: "https://t.co/tE3I3G7Z3E" },
@@ -386,7 +389,6 @@
     let visibleOffset = 0;
     const batchSize = 100;
 
-    // --- PROCEDURAL GENERATOR FOR ALL EXISTING GAMES IN THE WORLD (1 TO 100M) ---
     function getProceduralGame(index) {
       if (index <= coreGames.length) {
         return {
@@ -412,7 +414,6 @@
       };
     }
 
-    // Detector de IP e Localização
     async function fetchUserIPLocation() {
       const ipEl = document.getElementById("user-ip");
       const locEl = document.getElementById("user-location");
@@ -441,7 +442,6 @@
       }
     }
 
-    // Contador de visitas
     const STORAGE_KEY = "neon_arcade_views";
     const BASE_VIEWS = 845200;
 
@@ -473,7 +473,6 @@
       activeEl.textContent = `${activeCount.toLocaleString('pt-BR')} CONECTADOS`;
     }
 
-    // --- MOTOR DE RENDERIZAÇÃO VIRTUALIZADO PARA TODOS OS JOGOS ---
     const catalogEl = document.getElementById("catalog");
     const searchEl = document.getElementById("search");
     const emptyEl = document.getElementById("empty");
@@ -493,7 +492,6 @@
       let checked = 0;
       let currentIndex = visibleOffset + 1;
 
-      // Busca dinâmica em tempo real para encontrar qualquer jogo digitado
       if (searchTerm && !append) {
         generatedItems.push({
           index: 1,
@@ -599,7 +597,6 @@
       });
     }
 
-    // --- CONTROLES E FILTROS ---
     searchEl.addEventListener("input", () => {
       visibleOffset = 0;
       renderCatalog(false);
@@ -619,18 +616,15 @@
       renderCatalog(true);
     });
 
-    // --- CAMADA DE SEGURANÇA E PROTEÇÃO CONTRA CÓPIA DE CÓDIGO FONTE ---
-    // 1. Anti-Frame / Anti-Clickjacking
+    // --- CAMADA DE SEGURANÇA E PROTEÇÃO CONTRA CÓPIA ---
     if (window.top !== window.self) {
       try {
         window.top.location = window.self.location;
       } catch (e) {}
     }
 
-    // 2. Bloqueia clique com o botão direito do mouse
     document.addEventListener("contextmenu", (e) => e.preventDefault());
 
-    // 3. Bloqueia atalhos de inspeção (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+S)
     document.addEventListener("keydown", (e) => {
       const code = e.keyCode || e.which;
       const cmdOrCtrl = e.metaKey || e.ctrlKey;
@@ -645,7 +639,6 @@
       }
     });
 
-    // --- INICIALIZAÇÃO ---
     window.onload = function() {
       fetchUserIPLocation();
       initViewCounter();
